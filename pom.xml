@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+			
+	        
+         <!-- ================================================== -->
+         <!-- 			POM pour MAVEN 3.5.0					 -->
+         <!-- 			Java 1.8.0_144							 -->
+         <!-- ================================================== -->
+         
+
+	<!-- Version du POM. -->
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- POM PARENT SPRING BOOT -->	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.5.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	
+	
+	<!-- ========================================================== -->
+	<!-- POM APPLICATIF FILS DE POM PARENT SPRING BOOT              -->
+	<!-- GAV (identifiant du projet)                                -->
+	<!-- G : groupId : nom de domaine                               -->
+	<!-- A : artifactId : nom du projet                             -->
+	<!-- V : version : version du projet                            -->
+	<!-- ========================================================== -->
+	
+	<!-- domaine (espace de nom) appelé GROUPE (G) dans Maven -->				
+	<groupId>levy.daniel.application</groupId>
+	
+	<!-- NOM DU FUTUR FUTUR LIVRABLE (JAR, WAR, POM, ...) généré 
+	appelé artifactId (A) dans Maven -->
+	<!-- également le nom du projet MAVEN JAVA généré dans ECLIPSE -->		
+	<artifactId>ms_employe</artifactId>
+		
+	<!-- VERSION DU FUTUR LIVRABLE (JAR, WAR, POM, ...) -->
+	<!-- Si Version Bêta de développement (SNAPSHOT) -->
+	<!--non incrémentée dans Maven -->		
+	<version>1.00</version>
+	
+	
+
+	<!-- ========================================================== -->
+	<!--                       PACKAGING                            -->
+	<!-- Préciser ici la forme du livrable                          -->
+	<!-- que le projet Maven doit produire (war, jar,               -->
+	<!--	POM, ...).                                              -->
+	<!-- ========================================================== -->
+	<!-- Résultat du Packaging (forme du livrable). Ici JAR -->
+	<packaging>jar</packaging>
+	
+	<!-- INTERVIENT DANS LES LOGS MAVEN LORS DU BUILD. 
+	Par exemple, "Building 'bidon_name' 0.0.1-SNAPSHOT" -->
+	<!-- N'interfère pas dans le nom du livrable créé. 
+	C'est artifactId qui compte. -->	
+	<name>0_ms_employe</name>
+		
+	<!-- Description de l'application générée par le projet Maven -->	
+	<description>Micro-Service Métier gérant des employés</description>
+	
+	<!-- URL éventuelle permettant de se connecter à l'application -->
+	<url>http://${urlServer}:${portServer}</url>
+
+
+
+    <!-- ================================================ -->
+	<!--                    PROPERTIEs                    -->
+	<!-- Préciser ici les propriétés générales du projet. -->
+	<!-- ================================================ -->
+	<properties>
+	
+		<!-- version de Java -->
+		<java.version>1.8</java.version>	
+		<!-- Force l'encoding des sources du projet en UTF-8 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Vérifie la conformité des classes Java (.java) avec le JDK 1.8 -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<!-- Vérifie la conformité des classes Java (.class) avec le JDK 1.8 -->
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<!-- Encodage pourle Reporting (site web) -->
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+		<!-- Ne plante pas en cas d'absence de Web XML utile pour un projet J2EE 
+		(projet SPRING BOOT ici) 	-->		
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		
+		<!-- SAUTER LES TESTS LORS DU BUILD MAVEN -->
+		<maven.test.skip>true</maven.test.skip>
+		
+		<!-- CLASSE APPLICATIVE POUR CREER UN JAR APPLICATIF -->
+		<!-- Ne jamais mettre d'extension. Le .java sera utilisé 
+		pour le BUILD -->
+		<start-class>levy.daniel.application.Application</start-class>
+		
+		<!-- VERSION DE SPRING-CLOUD -->		
+		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+		
+	</properties>
+
+	
+	<!-- ======================================== -->
+	<!--                    PROFILS               -->
+	<!-- ======================================== -->
+	<profiles>
+	
+		<!-- PROFIL DEV -->	
+		<!-- A UTILISER LORS DU DEVELOPPEMENT en spécifiant l'URL localhost, 
+		les ports des micro-services, ... -->
+		<profile>
+		    <id>dev</id>
+		    <properties>
+		        <activatedProperties>dev</activatedProperties>
+		        <spring.profiles.active>dev</spring.profiles.active>
+        		<log4j.level>DEBUG</log4j.level>
+		    </properties>
+		    <activation>
+		    	<!-- PROFIL ACTIF LORS DE L'EXECUTION -->
+		        <activeByDefault>true</activeByDefault>
+		    </activation>
+		    <build>
+			    <resources>
+			        <resource>
+			            <directory>src/main/resources</directory>
+			            <filtering>true</filtering>
+			        </resource>
+			    </resources>
+			</build>
+		</profile>
+		
+		<!-- PROFIL PROD -->
+		<!-- A UTILISER LORS DE LA PRODUCTION.
+		l'URL du serveur de PRODUCTION, 
+		les ports de PRODUCTION des micro-services, 
+		devront être passés dynamiquement -->
+		<!-- LE STOCKAGE DES CONFIG DEVRA ETRE UN DEPOT GIT. -->
+		<profile>
+		    <id>prod</id>
+		    <properties>
+		        <activatedProperties>prod</activatedProperties>
+		        <spring.profiles.active>prod</spring.profiles.active>
+        		<log4j.level>FATAL</log4j.level>
+		    </properties>
+		   	<activation>
+		   		<!-- PROFIL ACTIF LORS DU BUILD (pas de l'exécution) -->
+		        <activeByDefault>false</activeByDefault>
+		    </activation>
+		    <build>
+			    <resources>
+			        <resource>
+			            <directory>src/main/resources</directory>
+			            <filtering>true</filtering>
+			        </resource>
+			    </resources>
+			</build>
+		    
+		</profile>
+			
+	</profiles>	
+
+	
+	<!-- ======================================== -->
+	<!--                DEPENDANCES               -->
+	<!-- ======================================== -->
+	<dependencies>
+					
+		<!-- ================================ -->
+		<!-- dépendances pour SPRING BOOT     -->
+		<!-- ================================ -->
+		<!-- SPRING WEB MVC -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<!-- SPRING JSON FORMAT HATEOAS -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+
+		<!-- CLIENT DU SERVICE DE CONFIGURATION -->	
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		
+		<!-- CLIENT ANNUAIRE DE MICRO-SERVICES (REGISTRY) EUREKA -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<!-- CIRCUIT BREAKER HYSTRIX -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+		</dependency>
+		
+		<!-- PROFILER MONITORING ACTUATOR -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+				
+		<!-- SPRING DATA PERSISTENCE -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- SPRING-DATA-REST-REPOSITORY - SERVICE WEB REST -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		
+		<!-- SPRING DEV TOOLS -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		
+				
+		<!-- ====================================================== -->
+		<!--        DEPENDANCES POUR Bases de Données  				-->
+		<!-- ====================================================== -->
+		<!-- H2 -->		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- POSTGRESQL -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+						
+		<!-- ====================================================== -->
+		<!--        DEPENDANCES Instrumentation de code  			-->
+		<!-- ====================================================== -->	
+		<!-- LOMBOK -->					
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+						
+		<!-- ====================================================== -->
+		<!--             DEPENDANCES SPOTBUGS  			            -->
+		<!-- ====================================================== -->			
+		<!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
+		<dependency>
+		    <groupId>com.github.spotbugs</groupId>
+		    <artifactId>spotbugs-annotations</artifactId>
+		    <version>4.1.4</version>
+		</dependency>
+		
+				
+		<!-- ====================================================== -->
+		<!--        DEPENDANCES POUR TESTS JUNIT 5  				-->
+		<!-- ====================================================== -->
+		<!-- JUnit 5 JUPITER -->						
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+				
+		<!-- DOCUMENTATION DU MICRO-SERVICE -->
+		<!-- SWAGGER 2 pour SPRING-BOOT -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-boot-starter</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+		
+	</dependencies>
+	
+			
+	<!-- =========================================== -->
+	<!-- MANAGEMENT des dépendances WEB CLOUD     	 -->
+	<!-- =========================================== -->			
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
